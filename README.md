@@ -1,4 +1,4 @@
-# cpu-vuln-sim
+# CPU Vulnerability Simulator
 
 A terminal-based, interactive simulator for CPU hardware security vulnerabilities. Step through each phase of a real-world speculative execution attack, instruction by instruction. This has been designed as an educational illustration, not a tool.
 
