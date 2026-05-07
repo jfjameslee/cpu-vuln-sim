@@ -1,6 +1,6 @@
 # cpu-vuln-sim
 
-A terminal-based, interactive simulator for CPU hardware security vulnerabilities. Step through each phase of a real-world speculative execution attack, instruction by instruction, and watch the side-channel unfold in your terminal. This has been designed as an educational illustration, not a tool.
+A terminal-based, interactive simulator for CPU hardware security vulnerabilities. Step through each phase of a real-world speculative execution attack, instruction by instruction. This has been designed as an educational illustration, not a tool.
 
 Built with Rust + [Ratatui](https://github.com/ratatui/ratatui).
 
@@ -19,7 +19,12 @@ Each simulation walks through the real gadget instructions, showing the CPU's in
 
 ## Demo
 
-@jfjameslee insert a screenshot here!
+<img width="1470" height="923" alt="Screenshot 2026-05-07 at 11 39 03" src="https://github.com/user-attachments/assets/3de1945d-a9b3-4432-ab1c-8578c3db1f42" />
+
+↑ Splash screen with simulation selections | Completed Spectre attack simulation ↓ 
+
+<img width="1470" height="923" alt="Screenshot 2026-05-07 at 11 39 19" src="https://github.com/user-attachments/assets/bf40d506-034f-46a1-9072-109f95df35c1" />
+
 
 ---
 
