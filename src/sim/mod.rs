@@ -2,6 +2,7 @@ use std::fmt;
 
 pub mod meltdown;
 pub mod spectre;
+pub mod spectre_retpoline;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CacheSlotState {

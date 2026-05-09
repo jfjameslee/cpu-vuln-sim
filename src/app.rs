@@ -2,10 +2,11 @@ use crossterm::event::KeyCode;
 use ratatui::Frame;
 
 use crate::sim::Simulation;
-use crate::splash::{SplashState, render_splash};
+use crate::splash::{MitigationState, SplashState, render_mitigation, render_splash};
 
 pub enum AppState {
     Splash(SplashState),
+    SelectMitigation(MitigationState),
     Running(Box<dyn Simulation>),
 }
 
@@ -21,6 +22,7 @@ impl App {
     pub fn draw(&self, frame: &mut Frame) {
         match &self.state {
             AppState::Splash(s) => render_splash(frame, s),
+            AppState::SelectMitigation(m) => render_mitigation(frame, m),
             AppState::Running(sim) => sim.draw(frame),
         }
     }
@@ -38,11 +40,32 @@ impl App {
                     false
                 }
                 KeyCode::Enter => {
-                    let sim = splash.launch();
-                    self.state = AppState::Running(sim);
+                    let sim_idx = splash.selected;
+                    self.state = AppState::SelectMitigation(MitigationState::new(sim_idx));
                     false
                 }
                 KeyCode::Char('q') | KeyCode::Esc => true,
+                _ => false,
+            },
+            AppState::SelectMitigation(mit) => match key {
+                KeyCode::Up => {
+                    mit.move_up();
+                    false
+                }
+                KeyCode::Down => {
+                    mit.move_down();
+                    false
+                }
+                KeyCode::Enter => {
+                    let sim = mit.launch();
+                    self.state = AppState::Running(sim);
+                    false
+                }
+                KeyCode::Char('b') | KeyCode::Char('B') | KeyCode::Esc => {
+                    self.state = AppState::Splash(SplashState::new());
+                    false
+                }
+                KeyCode::Char('q') => true,
                 _ => false,
             },
             AppState::Running(sim) => match key {
