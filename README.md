@@ -8,10 +8,11 @@ Built with Rust + [Ratatui](https://github.com/ratatui/ratatui).
 
 ## Simulations
 
-| Name                  | CVE           | Technique                                                                                                 |
-| --------------------- | ------------- | --------------------------------------------------------------------------------------------------------- |
-| **Meltdown**          | CVE-2017-5754 | Out-of-order execution past a page fault leaks kernel memory to user space                                |
-| **Spectre Variant 1** | CVE-2017-5753 | Bounds Check Bypass — a mispredicted branch causes speculative reads that leave cache-timing side effects |
+| Name                    | CVE           | Technique                                                                                                  |
+| ----------------------- | ------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Meltdown**            | CVE-2017-5754 | Out-of-order execution past a page fault leaks kernel memory to user space                                 |
+| **Spectre Variant 1**   | CVE-2017-5753 | Bounds Check Bypass — a mispredicted branch causes speculative reads that leave cache-timing side effects  |
+| **Spectre + RETPOLINE** | CVE-2017-5715 | Branch Target Injection blocked by RETPOLINE — return trampoline diverts speculation to safe pause/lfence loop |
 
 Each simulation walks through the real gadget instructions, showing the CPU's internal state (pipeline, cache, registers, branch predictor) at every step.
 
@@ -42,15 +43,15 @@ cargo run --release
 
 ## Controls
 
-| Key         | Action                                                    |
-| ----------- | --------------------------------------------------------- |
-| `↑` / `↓`   | Navigate simulation list (splash screen)                  |
-| `ENTER`     | Launch selected simulation / step forward one instruction |
-| `SPACE`     | Step forward one instruction                              |
-| `F`         | Fast-forward to end of current phase                      |
-| `R`         | Reset simulation to beginning                             |
-| `B` / `ESC` | Return to splash screen                                   |
-| `Q`         | Quit                                                      |
+| Key         | Action                                                                     |
+| ----------- | -------------------------------------------------------------------------- |
+| `↑` / `↓`   | Navigate simulation or mitigation list                                     |
+| `ENTER`     | Confirm selection / step forward one instruction                           |
+| `SPACE`     | Step forward one instruction                                               |
+| `F`         | Fast-forward to end of current phase                                       |
+| `R`         | Reset simulation to beginning                                              |
+| `B` / `ESC` | Return to previous screen (mitigation panel → splash; simulation → splash) |
+| `Q`         | Quit                                                                       |
 
 ---
 
@@ -58,13 +59,14 @@ cargo run --release
 
 ```
 src/
-  main.rs           — Entry point; event loop
-  app.rs            — AppState (Splash | Running), key dispatch
-  splash.rs         — Splash screen, simulation catalog
+  main.rs                — Entry point; event loop
+  app.rs                 — AppState (Splash | SelectMitigation | Running), key dispatch
+  splash.rs              — Splash screen, mitigation panel, simulation catalog
   sim/
-    mod.rs          — Simulation trait + shared types
-    meltdown/       — CVE-2017-5754 implementation
-    spectre/        — CVE-2017-5753 V1 implementation
+    mod.rs               — Simulation trait + shared types
+    meltdown/            — CVE-2017-5754 implementation
+    spectre/             — CVE-2017-5753 V1 implementation
+    spectre_retpoline/   — CVE-2017-5715 RETPOLINE mitigation demonstration
 ```
 
 Each simulation module follows the same pattern: `sim.rs` (state machine), `ui.rs` (rendering), `mod.rs` (trait impl).
@@ -124,8 +126,10 @@ Contributions are welcome — bug fixes, new simulations, UI improvements, or do
 
 - [Meltdown paper — Lipp et al., 2018](https://meltdownattack.com/meltdown.pdf)
 - [Spectre paper — Kocher et al., 2019](https://spectreattack.com/spectre.pdf)
+- [Retpoline: A Branch Target Injection Mitigation — Paul Turner, Google, 2018](https://support.google.com/faqs/answer/7625886)
 - [CVE-2017-5754](https://nvd.nist.gov/vuln/detail/CVE-2017-5754)
 - [CVE-2017-5753](https://nvd.nist.gov/vuln/detail/CVE-2017-5753)
+- [CVE-2017-5715](https://nvd.nist.gov/vuln/detail/CVE-2017-5715)
 
 ---
 
